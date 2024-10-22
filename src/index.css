@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Merriweather:wght@400;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@400;700&family=Merriweather:wght@400;700&display=swap");
 
 * {
   box-sizing: border-box;
@@ -6,7 +6,7 @@
 
 body {
   margin: 0;
-  font-family: 'Quicksand', serif;
+  font-family: "Quicksand", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: linear-gradient(#31220b, #382e1b);
@@ -285,6 +285,7 @@ h1 {
 
   h1 {
     color: #f3e7d4;
+    padding-bottom: 3rem;
   }
 
   p {
@@ -296,11 +297,9 @@ h1 {
 
 .checkout-items {
   list-style: none;
-  background-color: #edbf68;
   color: #201e1a;
   font-weight: bold;
   padding: 1rem;
-  border-radius: 10px;
   width: 70%;
 
   img {
@@ -315,5 +314,25 @@ h1 {
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  padding-bottom: 1rem;
+  padding: 1rem 3rem;
+  margin-bottom: 1rem;
+  background-color: #edbf68;
+  border-radius: 10px;
+
+  .cart-item-actions {
+    background-color: #f3e7d4;
+    padding: 1rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .checkout-items li div {
+    flex-direction: column;
+
+    .cart-item-actions {
+      flex-direction: row;
+      background-color: #f3e7d4;
+    }
+
+  }
 }
