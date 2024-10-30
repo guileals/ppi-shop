@@ -1,8 +1,11 @@
 import { createContext, useReducer } from "react";
 import { useState, useEffect } from "react";
+
 export const CartContext = createContext({
   items: [],
   products: [],
+  loading: false,
+  error: "",
   addItemToCart: () => {},
   updateItemQuantity: () => {},
 });
@@ -70,18 +73,26 @@ function shoppingCartReducer(state, action) {
 export default function CartContextProvider({ children }) {
   // FETCH DATA
   const [products, setProducts] = useState([]);
-
-  async function fetchProducts() {
-    const response = await fetch(
-      "https://dummyjson.com/products/category/fragrances?limit=12&select=id,thumbnail,title,price,description"
-    );
-    const result = await response.json();
-    setProducts(result.products);
-  }
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
+    async function fetchProducts() {
+      setLoading(true);
+      const response = await fetch(
+        "https://dummyjson.com/products/category/fragrances?limit=12&select=id,thumbnail,title,price,description"
+      );
+      if (!response.ok) {
+        setError("Fetching products failed!");
+      } else {
+        const result = await response.json();
+        setProducts(result.products);
+      }
+      setLoading(false);
+    }
+
     fetchProducts();
-  });
+  }, []);
 
   //useReducer
   const [shoppingCartState, shoppingCartDispatch] = useReducer(
@@ -112,6 +123,8 @@ export default function CartContextProvider({ children }) {
   const ctx = {
     items: shoppingCartState.items,
     products: products,
+    loading: loading,
+    error: error,
     addItemToCart: handleAddItemToCart,
     updateItemQuantity: handleUpdateCartItemQuantity,
   };

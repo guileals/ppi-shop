@@ -44,7 +44,7 @@ h1 {
   background: #edbf68;
   border: none;
   border-radius: 5px;
-  padding: 0.5rem 1.5rem;
+  padding: 1rem 1.5rem;
   color: #201e1a;
   font-size: 1.25rem;
   cursor: pointer;
@@ -335,4 +335,13 @@ h1 {
     }
 
   }
+}
+
+#loading {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 3rem;
+  gap: 3rem;
 }
