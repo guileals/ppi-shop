@@ -88,7 +88,9 @@ export default function CartContextProvider({ children }) {
         const result = await response.json();
         setProducts(result.products);
       }
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 2000);
     }
 
     fetchProducts();
