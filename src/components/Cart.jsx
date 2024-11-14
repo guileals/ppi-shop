@@ -12,6 +12,7 @@ export default function Cart() {
 
   return (
     <div id="cart">
+      <h1>Your cart</h1>
       {items.length === 0 && <p>No items in cart!</p>}
       {items.length > 0 && (
         <ul id="cart-items">
@@ -21,7 +22,7 @@ export default function Cart() {
             return (
               <li key={item.id}>
                 <div>
-                  <span>{item.name}</span>
+                  <span>{item.title}</span>
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">

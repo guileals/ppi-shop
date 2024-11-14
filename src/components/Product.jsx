@@ -7,9 +7,15 @@ export default function Product({
   title,
   price,
   description,
+  openModal,
 }) {
 
   const { addItemToCart } = useContext(CartContext);
+
+  const handleClick = () => {
+    addItemToCart(id);
+    openModal();
+  };
 
   return (
     <article className="product">
@@ -21,7 +27,7 @@ export default function Product({
           <p>{description}</p>
         </div>
         <p className="product-actions">
-          <button onClick={() => addItemToCart(id)}>Add to Cart</button>
+          <button onClick={handleClick}>ADD TO CART</button>
         </p>
       </div>
     </article>
