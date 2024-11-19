@@ -1,5 +1,6 @@
 import { createContext, useReducer } from "react";
 import { useState, useEffect } from "react";
+import { supabase } from "../utils/supabase";
 
 export const CartContext = createContext({
   items: [],
@@ -77,23 +78,37 @@ export default function CartContextProvider({ children }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    async function fetchProducts() {
+
+    async function getProducts() {
       setLoading(true);
-      const response = await fetch(
-        "https://dummyjson.com/products/category/fragrances?limit=12&select=id,thumbnail,title,price,description"
-      );
-      if (!response.ok) {
-        setError("Fetching products failed!");
+      const { data: products, error } = await supabase.from('products').select();
+      if (products.length > 1) {
+        setProducts(products);
       } else {
-        const result = await response.json();
-        setProducts(result.products);
+        setError(`Fetching products failed! ${error}`);
       }
-      setTimeout(() => {
-        setLoading(false);
-      }, 2000);
+      setLoading(false);
     }
 
-    fetchProducts();
+    getProducts();
+
+    // async function fetchProducts() {
+    //   setLoading(true);
+    //   const response = await fetch(
+    //     "https://dummyjson.com/products/category/fragrances?limit=12&select=id,thumbnail,title,price,description"
+    //   );
+    //   if (!response.ok) {
+    //     setError("Fetching products failed!");
+    //   } else {
+    //     const result = await response.json();
+    //     setProducts(result.products);
+    //   }
+    //   setTimeout(() => {
+    //     setLoading(false);
+    //   }, 2000);
+    // }
+
+    // fetchProducts();
   }, []);
 
   //useReducer

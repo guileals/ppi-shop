@@ -1,26 +1,33 @@
 import Product from "./Product.jsx";
 import { CartContext } from "../store/shopping-cart-context";
-import { useContext, useState, useRef } from "react";
+import { useContext, useState, useRef, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import Modal from "./Modal.js";
 import Cart from "./Cart.jsx";
 
 export default function Shop() {
+
   const { products, loading, error } = useContext(CartContext);
 
   const modalRef = useRef();
   const openModal = () => modalRef.current.open();
 
-  const searchInput = useRef(); // Usado para capturar o valor do input
-  const [filteredItems, setFilteredItems] = useState(products);
+  const searchInput = useRef(""); // Usado para capturar o valor do input
+  const [filteredItems, setFilteredItems] = useState([]);
+
+  useEffect(() => {
+    if (products) {
+      setFilteredItems(products);
+    }
+  }, [products]);
 
   // Função para pesquisar na lista
-  const handleSearch = () => {
+  function handleSearch() {
     const searchTerm = searchInput.current.value.toLowerCase();
     setFilteredItems(
       products.filter((item) => item.title.toLowerCase().includes(searchTerm))
     );
-  };
+  }
 
   // Função para limpar a pesquisa
   const clearSearch = () => {
@@ -40,7 +47,7 @@ export default function Shop() {
           <input
             ref={searchInput}
             type="text"
-            placeholder="Digite para pesquisar..."
+            placeholder="Type to search..."
             onChange={handleSearch}
             className="search-input"
           />
@@ -52,19 +59,21 @@ export default function Shop() {
 
       <ul id="products">
         {error && <p>{error}</p>}
-        {!loading && products ? (
+        {loading && 
+          <div id="loading">
+            <CircularProgress size="10rem" color="inherit" />
+            <p>Loading products...</p>
+          </div>
+        }
+        {!loading && !error && filteredItems.length > 0 ? (
           filteredItems.map((product) => (
             <li key={product.id}>
               <Product {...product} openModal={openModal} />
             </li>
           ))
         ) : (
-          <div id="loading">
-            <CircularProgress size="10rem" color="inherit" />
-            <p>Loading products...</p>
-          </div>
+          <p className="warning">Not found!</p>
         )}
-        {filteredItems.length === 0 && <p className="warning">Not found!</p>}
       </ul>
     </section>
   );
