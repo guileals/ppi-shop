@@ -4,11 +4,10 @@ import { CartContext } from "../store/shopping-cart-context";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import Badge from '@mui/material/Badge';
-import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
+import Badge from "@mui/material/Badge";
+import { styled } from "@mui/material/styles";
+import IconButton from "@mui/material/IconButton";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -21,7 +20,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 export default function Header() {
-  const { items } = useContext(CartContext);
+  const { session, items } = useContext(CartContext);
 
   // const modal = useRef();
 
@@ -37,7 +36,8 @@ export default function Header() {
       <header id="main-header">
         <div id="main-title">
           {/* <img src="logo.png" alt="Elegant model" /> */}
-          <h1>Elegant Context</h1>
+          <Link to="/" className="link_home"><h1>Elegant Context</h1></Link>
+          {session && <Link to="/auth" className="link_auth"><h3>Welcome, {session.user.email}</h3></Link>}
         </div>
         <p>
           <Link to="/checkout">

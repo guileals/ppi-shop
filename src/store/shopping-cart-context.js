@@ -9,6 +9,12 @@ export const CartContext = createContext({
   error: "",
   addItemToCart: () => {},
   updateItemQuantity: () => {},
+  session: null,
+  sessionLoading: false,
+  sessionError: "",
+  handleSignUp: () => {},
+  handleSignIn: () => {},
+  handleLogout: () => {},
 });
 
 function shoppingCartReducer(state, action) {
@@ -76,12 +82,16 @@ export default function CartContextProvider({ children }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [session, setSession] = useState(null);
+  const [sessionLoading, setSessionLoading] = useState(false);
+  const [sessionError, setSessionError] = useState(null);
 
   useEffect(() => {
-
     async function getProducts() {
       setLoading(true);
-      const { data: products, error } = await supabase.from('products').select();
+      const { data: products, error } = await supabase
+        .from("products")
+        .select();
       if (products.length > 1) {
         setProducts(products);
       } else {
@@ -91,6 +101,18 @@ export default function CartContextProvider({ children }) {
     }
 
     getProducts();
+
+    // User Session
+
+    // Verifica a sessão ativa
+    const { data: subscription } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setSession(session);
+      }
+    );
+
+    // Cleanup da inscrição
+    return () => subscription.subscription.unsubscribe();
 
     // async function fetchProducts() {
     //   setLoading(true);
@@ -119,10 +141,6 @@ export default function CartContextProvider({ children }) {
     }
   );
 
-  //   const [shoppingCart, setShoppingCart] = useState({
-  //     items: [],
-  //   });
-
   function handleAddItemToCart(id) {
     shoppingCartDispatch({
       type: "ADD_ITEM",
@@ -137,6 +155,53 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  // Verificar se o e-mail já existe
+  const checkEmailExists = async (email) => {
+    const { data, error } = await supabase
+      .from("auth.users")
+      .select("email")
+      .eq("email", email);
+
+    if (error) {
+      alert("Erro ao verificar e-mail: ", error);
+      return false;
+    }
+    return data.length > 0; // Retorna true se o e-mail existir
+  };
+
+  const handleSignUp = async (email, password) => {
+    setSessionLoading(true);
+    setSessionError(null);
+
+    const emailExists = await checkEmailExists(email);
+    if (emailExists) {
+      setSessionError("E-mail already exists. Try to log in.");
+    } else {
+      const { error } = await supabase.auth.signUp({ email, password });
+      setSessionLoading(false);
+      if (error) setSessionError(error.message);
+      else
+        alert(
+          "Signed Up! Check and verify your email to confirm subscription!"
+        );
+    }
+  };
+
+  const handleSignIn = async (email, password) => {
+    setSessionLoading(true);
+    setSessionError(null);
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+    setSessionLoading(false);
+    if (error) setSessionError(error.message);
+  };
+
+  function handleLogout() {
+    setSession(null);
+  }
+
   const ctx = {
     items: shoppingCartState.items,
     products: products,
@@ -144,6 +209,12 @@ export default function CartContextProvider({ children }) {
     error: error,
     addItemToCart: handleAddItemToCart,
     updateItemQuantity: handleUpdateCartItemQuantity,
+    session: session,
+    sessionLoading: sessionLoading,
+    sessionError: sessionError,
+    handleSignUp: handleSignUp,
+    handleSignIn: handleSignIn,
+    handleLogout: handleLogout,
   };
 
   return <CartContext.Provider value={ctx}>{children}</CartContext.Provider>;

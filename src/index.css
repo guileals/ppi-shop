@@ -4,6 +4,15 @@
   box-sizing: border-box;
 }
 
+:root {
+  /* --NOME: VALOR; */
+  --blue: #2d728f;
+  --black: #252323;
+  --white: #f5f1ed;
+  --sand: #dad2bc;
+  --brown: #a99985;
+}
+
 body {
   margin: 0;
   font-family: "Quicksand", serif;
@@ -23,7 +32,29 @@ body {
 
 #main-title {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  
+  h3 {
+    margin: 0;
+    font-style: italic;
+    font-weight: 100;
+    font-size: smaller;
+  }
+}
+
+.link_home {
+  text-decoration: none;
+}
+
+.link_auth {
+  text-decoration: none;
+  color: var(--sand);
+}
+
+.link_auth:hover {
+  text-decoration: underline;
+  color: var(--white);
 }
 
 #main-title img {

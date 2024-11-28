@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 import Checkout from "./components/Checkout.js";
 
 import CartContextProvider from "./store/shopping-cart-context.js";
+import Auth from "./components/Auth.js";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <Header />
       <Routes>
         <Route path="/" element={<Shop />} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </CartContextProvider>
