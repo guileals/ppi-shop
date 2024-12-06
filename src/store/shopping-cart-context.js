@@ -155,36 +155,33 @@ export default function CartContextProvider({ children }) {
     });
   }
 
-  // Verificar se o e-mail já existe
-  const checkEmailExists = async (email) => {
-    const { data, error } = await supabase
-      .from("auth.users")
-      .select("email")
-      .eq("email", email);
-
-    if (error) {
-      alert("Erro ao verificar e-mail: ", error);
-      return false;
-    }
-    return data.length > 0; // Retorna true se o e-mail existir
-  };
-
-  const handleSignUp = async (email, password) => {
+  const handleSignUp = async (firstName, lastName, email, password) => {
     setSessionLoading(true);
     setSessionError(null);
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    });
 
-    const emailExists = await checkEmailExists(email);
-    if (emailExists) {
-      setSessionError("E-mail already exists. Try to log in.");
-    } else {
-      const { error } = await supabase.auth.signUp({ email, password });
-      setSessionLoading(false);
-      if (error) setSessionError(error.message);
-      else
+    if (data && data.user) {
+      // Check if the user got created
+      if (data.user.identities && data.user.identities?.length > 0) {
+        // success
         alert(
           "Signed Up! Check and verify your email to confirm subscription!"
         );
+      } else {
+        // failed, the email address is taken
+        setSessionError("E-mail already taken. Try to log in!");
+      }
     }
+    setSessionLoading(false);
   };
 
   const handleSignIn = async (email, password) => {

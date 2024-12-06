@@ -28,6 +28,10 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 3rem 15%;
+
+  & .iconbutton {
+    margin: 0 0.5rem;
+  }
 }
 
 #main-title {
@@ -72,7 +76,7 @@ h1 {
 }
 
 #main-header button {
-  background: #edbf68;
+  background: #f5b744;
   border: none;
   border-radius: 5px;
   padding: 1rem 1.5rem;
@@ -82,7 +86,7 @@ h1 {
 }
 
 #main-header button:hover {
-  background: #f5b744;
+  background: #edbf68;
 }
 
 #shop {

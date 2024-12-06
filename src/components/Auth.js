@@ -12,6 +12,8 @@ export default function Auth() {
     handleLogout,
   } = useContext(CartContext);
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -19,6 +21,18 @@ export default function Auth() {
     <div className={styles.form}>
       <h2>Credentials</h2>
       {sessionError && <p style={{ color: "red" }}>{sessionError}</p>}
+      <input
+        type="text"
+        placeholder="First Name"
+        value={firstName}
+        onChange={(e) => setFirstName(e.target.value)}
+      />
+      <input
+        type="text"
+        placeholder="Last Name"
+        value={lastName}
+        onChange={(e) => setLastName(e.target.value)}
+      />
       <input
         type="email"
         placeholder="E-mail"
@@ -46,7 +60,7 @@ export default function Auth() {
             {sessionLoading ? "Logging in..." : "LOGIN"}
           </button>
           <button
-            onClick={() => handleSignUp(email, password)}
+            onClick={() => handleSignUp(firstName, lastName, email, password)}
             disabled={sessionLoading}
           >
             {sessionLoading ? "Signing up..." : "SIGN UP"}

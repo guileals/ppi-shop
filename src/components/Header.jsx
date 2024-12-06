@@ -8,6 +8,7 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Login } from "@mui/icons-material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -36,20 +37,29 @@ export default function Header() {
       <header id="main-header">
         <div id="main-title">
           {/* <img src="logo.png" alt="Elegant model" /> */}
-          <Link to="/" className="link_home"><h1>Elegant Context</h1></Link>
-          {session && <Link to="/auth" className="link_auth"><h3>Welcome, {session.user.email}</h3></Link>}
+          <Link to="/" className="link_home">
+            <h1>Elegant Context</h1>
+          </Link>
+          {session && (
+            <Link to="/auth" className="link_auth">
+              <h3>Welcome, {session.user.user_metadata.first_name} {session.user.user_metadata.last_name}</h3>
+            </Link>
+          )}
         </div>
-        <p>
+        <div>
+          <Link to="/auth">
+            <IconButton aria-label="cart" size="large" className="iconbutton">
+              <Login />
+            </IconButton>
+          </Link>
           <Link to="/checkout">
-            {/* <button onClick={handleOpenCartClick}>Cart ({cartQuantity})</button> */}
-            {/* <button>Cart ({cartQuantity})</button> */}
-            <IconButton aria-label="cart" size="large">
+            <IconButton aria-label="cart" size="large" className="iconbutton">
               <StyledBadge badgeContent={cartQuantity}>
                 <ShoppingCartIcon size="large" />
               </StyledBadge>
             </IconButton>
           </Link>
-        </p>
+        </div>
       </header>
     </>
   );
