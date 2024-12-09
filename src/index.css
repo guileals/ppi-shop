@@ -38,7 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  
+
   h3 {
     margin: 0;
     font-style: italic;
@@ -54,6 +54,7 @@ body {
 .link_auth {
   text-decoration: none;
   color: var(--sand);
+  text-align: center;
 }
 
 .link_auth:hover {
@@ -377,7 +378,15 @@ h1 {
       flex-direction: row;
       background-color: #f3e7d4;
     }
+  }
 
+  .icons-list {
+    display: flex;
+    margin-top: 1rem;
+  }
+
+  #main-header {
+    flex-direction: column;
   }
 }
 
@@ -418,7 +427,6 @@ h1 {
     font-style: italic;
     color: palevioletred;
   }
-
 }
 
 .modal-close {

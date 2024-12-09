@@ -5,6 +5,7 @@ import Checkout from "./components/Checkout.js";
 
 import CartContextProvider from "./store/shopping-cart-context.js";
 import Auth from "./components/Auth.js";
+import Signup from "./components/Signup.js";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Shop />} />
         <Route path="/auth" element={<Auth />} />
+        <Route path="/signup" element={<Signup />} />
         <Route path="/checkout" element={<Checkout />} />
       </Routes>
     </CartContextProvider>

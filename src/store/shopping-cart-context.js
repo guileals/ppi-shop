@@ -158,7 +158,7 @@ export default function CartContextProvider({ children }) {
   const handleSignUp = async (firstName, lastName, email, password) => {
     setSessionLoading(true);
     setSessionError(null);
-    const { data, error } = await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email: email,
       password: password,
       options: {

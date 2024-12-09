@@ -8,7 +8,7 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Login } from "@mui/icons-material";
+import { AccountCircle, Login } from "@mui/icons-material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -42,16 +42,37 @@ export default function Header() {
           </Link>
           {session && (
             <Link to="/auth" className="link_auth">
-              <h3>Welcome, {session.user.user_metadata.first_name} {session.user.user_metadata.last_name}</h3>
+              <h3>
+                Welcome, {session.user.user_metadata.first_name}{" "}
+                {session.user.user_metadata.last_name}
+              </h3>
             </Link>
           )}
         </div>
-        <div>
-          <Link to="/auth">
-            <IconButton aria-label="cart" size="large" className="iconbutton">
-              <Login />
-            </IconButton>
-          </Link>
+        <div className="icons-list">
+          {!session && (
+            <>
+              <Link to="/auth">
+                <IconButton
+                  aria-label="cart"
+                  size="large"
+                  className="iconbutton"
+                >
+                  <Login />
+                </IconButton>
+              </Link>
+              <Link to="/signup">
+                <IconButton
+                  aria-label="cart"
+                  size="large"
+                  className="iconbutton"
+                >
+                  <AccountCircle />
+                </IconButton>
+              </Link>
+            </>
+          )}
+
           <Link to="/checkout">
             <IconButton aria-label="cart" size="large" className="iconbutton">
               <StyledBadge badgeContent={cartQuantity}>
